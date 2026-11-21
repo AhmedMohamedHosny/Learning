@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeForge — Multi-Language Interactive Engineering Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Subtle Ambient Mesh Background -->
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <button id="brandHomeBtn" class="brand-logo" title="Back to Dashboard">
+        <span class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </span>
+        <span class="brand-text">Code<span>Forge</span></span>
+        <span class="brand-tag">PRO IDE</span>
+      </button>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <button class="nav-link active" data-view="dashboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Tracks
+        </button>
+        <button class="nav-link" data-view="workspace" id="navWorkspaceBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Workspace
+        </button>
+        <button class="nav-link" data-view="compare">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 21H3v-5"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+          Language Bridge
+        </button>
+        <button class="nav-link" data-view="playground">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Playground
+        </button>
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <div class="xp-pill" title="Your Engineering XP & Rank">
+        <span class="xp-dot"></span>
+        <span id="globalRankLabel">Novice</span>
+        <span class="xp-divider">•</span>
+        <strong id="globalXpLabel">0 XP</strong>
+      </div>
+      <button id="resetProgressBtn" class="icon-btn" title="Reset Local Progress">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- =========================================================
+       VIEW 1: DASHBOARD (LANGUAGE TRACKS)
+       ========================================================= -->
+  <main id="dashboardView" class="view active">
+    <section class="hero-section">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Interactive Multi-Language Engineering Platform
+      </div>
+      <h1 class="hero-title">
+        Master Every Language.<br />
+        <span class="gradient-text">Build Real Projects at Every Level.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Write, compile, and debug real code in a VS Code-grade workspace with structured 5-level roadmaps,
+        progressive project blueprints, and instant bilingual error diagnostics.
+      </p>
+
+      <div class="hero-stats" id="heroStats">
+        <div class="stat-chip">
+          <span class="stat-value" id="statLangCount">6</span>
+          <span class="stat-label">Languages Ready</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-value" id="statLessonsDone">0</span>
+          <span class="stat-label">Lessons Completed</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-value" id="statChallengesDone">0</span>
+          <span class="stat-label">Challenges Solved</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-value" id="statProjectsCount">30</span>
+          <span class="stat-label">Guided Projects</span>
+        </div>
+      </div>
+
+      <div class="search-bar-wrap">
+        <svg class="search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="langSearchInput" placeholder="Search languages, paradigms, or career tracks (e.g. Python, Systems, Mobile, OOP)..." />
+      </div>
+    </section>
+
+    <section class="tracks-section">
+      <div class="section-header">
+        <div>
+          <h2>Engineering Language Tracks</h2>
+          <p>Select any language to launch its interactive curriculum, compiler, and level-based projects.</p>
+        </div>
+        <div class="filter-pills" id="trackFilterPills">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="systems">Systems</button>
+          <button class="filter-pill" data-filter="web">Web &amp; Mobile</button>
+          <button class="filter-pill" data-filter="enterprise">AI &amp; Enterprise</button>
+        </div>
+      </div>
+
+      <div id="languageCardsGrid" class="language-grid"></div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>CodeForge Interactive Academy &bull; Modular Pure HTML/CSS/JS Architecture</span>
+        <span class="footer-credit">Eng: Ahmed M Hosny &nbsp;|&nbsp; <span dir="rtl" class="ar-inline">تم تطوير هذا البرنامج بواسطة المهندس Ahmed M Hosny</span></span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- =========================================================
+       VIEW 2: SPLIT-SCREEN INTERACTIVE WORKSPACE
+       ========================================================= -->
+  <section id="workspaceView" class="view workspace-view">
+    <!-- Workspace Sub-Header -->
+    <div class="ws-bar">
+      <div class="ws-bar-left">
+        <button id="wsBackBtn" class="btn-ghost btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Tracks
+        </button>
+        <div class="ws-lang-switcher">
+          <span id="wsLangDot" class="lang-dot"></span>
+          <select id="wsLangSelect" aria-label="Switch Language"></select>
+        </div>
+        <div class="ws-level-badge" id="wsLevelBadge">Level 1</div>
+      </div>
+
+      <div class="ws-tabs" role="tablist">
+        <button class="ws-tab active" data-tab="learn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Learn
+        </button>
+        <button class="ws-tab" data-tab="exercises">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          Exercises
+        </button>
+        <button class="ws-tab" data-tab="projects">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Projects
+        </button>
+      </div>
+
+      <div class="ws-bar-right">
+        <div class="ws-progress-wrap">
+          <span id="wsProgressText">0%</span>
+          <div class="ws-progress-track"><div id="wsProgressFill" class="ws-progress-fill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Split Screen Layout -->
+    <div class="split-container" id="splitContainer">
+      <!-- LEFT PANEL: Curriculum / Exercises / Projects -->
+      <aside class="left-panel" id="leftPanel">
+        <!-- Level Selector Strip -->
+        <div class="level-strip" id="levelStrip"></div>
+
+        <!-- Dynamic Tab Content -->
+        <div class="panel-scroll" id="leftPanelContent"></div>
+      </aside>
+
+      <!-- Draggable Vertical Divider -->
+      <div class="resizer-v" id="resizerV" title="Drag to resize panels"></div>
+
+      <!-- RIGHT PANEL: Code Editor + Console / Error Inspector -->
+      <section class="right-panel" id="rightPanel">
+        <!-- Editor Header Toolbar -->
+        <div class="editor-toolbar">
+          <div class="editor-file-tab">
+            <span class="file-dot" id="editorFileDot"></span>
+            <span id="editorFileName">main.py</span>
+            <span class="editor-engine-tag" id="editorEngineTag">Monaco IDE</span>
+          </div>
+
+          <div class="editor-actions">
+            <div class="font-zoom-group" title="Font Size (or Ctrl + Mouse Wheel)">
+              <button id="fontDecBtn" class="tool-icon-btn">A-</button>
+              <span id="fontSizeDisplay">14px</span>
+              <button id="fontIncBtn" class="tool-icon-btn">A+</button>
+            </div>
+            <button id="resetCodeBtn" class="btn-ghost btn-sm" title="Reset to Starter Code">Reset</button>
+            <button id="fullscreenIdeBtn" class="tool-icon-btn" title="Toggle Fullscreen IDE">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            </button>
+            <button id="testCodeBtn" class="btn-accent btn-sm hidden">
+              ✓ Verify Solution
+            </button>
+            <button id="runCodeBtn" class="btn-primary btn-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Run Code
+            </button>
+          </div>
+        </div>
+
+        <!-- Monaco / Fallback Editor Container -->
+        <div class="editor-host" id="editorHost">
+          <div id="monacoContainer" class="monaco-container"></div>
+          <textarea id="fallbackEditor" class="fallback-editor hidden" spellcheck="false" aria-label="Code Editor"></textarea>
+        </div>
+
+        <!-- Horizontal Resizer between Editor and Terminal -->
+        <div class="resizer-h" id="resizerH" title="Drag to resize terminal"></div>
+
+        <!-- Bottom Console & Bilingual Error Diagnostics -->
+        <div class="console-panel" id="consolePanel">
+          <div class="console-header">
+            <div class="console-tabs">
+              <button class="console-tab active" data-ctab="output">
+                Terminal Output
+                <span id="consoleStatusDot" class="status-dot"></span>
+              </button>
+              <button class="console-tab" data-ctab="diagnostics">
+                Error Inspector (EN / AR)
+                <span id="errorCountBadge" class="error-badge hidden">0</span>
+              </button>
+              <button class="console-tab" data-ctab="stdin">
+                Program Input (stdin)
+              </button>
+            </div>
+            <div class="console-meta">
+              <span id="execTimeLabel" class="exec-time"></span>
+              <button id="clearConsoleBtn" class="btn-ghost btn-xs">Clear</button>
+            </div>
+          </div>
+
+          <div class="console-body">
+            <div id="consoleOutputPane" class="console-pane active">
+              <div class="console-placeholder">Press <strong>Run Code</strong> (or <code>Ctrl + Enter</code>) to execute your program...</div>
+            </div>
+
+            <div id="consoleDiagPane" class="console-pane">
+              <div class="console-placeholder">No errors detected. When a syntax or runtime error occurs, its English &amp; Arabic diagnosis and fix will appear here automatically.</div>
+            </div>
+
+            <div id="consoleStdinPane" class="console-pane">
+              <textarea id="stdinInput" class="stdin-textarea" placeholder="Enter standard input lines here (for input(), scanf, cin, Scanner, stdin.readLineSync)..."></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 3: LANGUAGE BRIDGE (SIDE-BY-SIDE COMPARE)
+       ========================================================= -->
+  <section id="compareView" class="view compare-view">
+    <div class="compare-container">
+      <div class="compare-header">
+        <div>
+          <span class="eyebrow">LANGUAGE BRIDGE</span>
+          <h2>Side-by-Side Syntax &amp; Concept Translator</h2>
+          <p>Already know one language? Map core concepts directly to a new language in seconds.</p>
+        </div>
+        <div class="compare-controls">
+          <select id="compareLangA" aria-label="First Language"></select>
+          <span class="vs-badge">VS</span>
+          <select id="compareLangB" aria-label="Second Language"></select>
+        </div>
+      </div>
+
+      <div class="concept-pills" id="compareConceptPills"></div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-card-head">
+            <span id="compareTitleA">Python</span>
+            <button id="openAInPlayground" class="btn-ghost btn-xs">Run in Playground →</button>
+          </div>
+          <pre class="compare-code"><code id="compareCodeA"></code></pre>
+        </div>
+
+        <div class="compare-card">
+          <div class="compare-card-head">
+            <span id="compareTitleB">C++</span>
+            <button id="openBInPlayground" class="btn-ghost btn-xs">Run in Playground →</button>
+          </div>
+          <pre class="compare-code"><code id="compareCodeB"></code></pre>
+        </div>
+      </div>
+
+      <div class="compare-insight" id="compareInsightBox"></div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       VIEW 4: MULTI-LANGUAGE PLAYGROUND
+       ========================================================= -->
+  <section id="playgroundView" class="view playground-view">
+    <div class="pg-shell">
+      <div class="pg-topbar">
+        <div class="pg-left">
+          <span class="eyebrow">SANDBOX</span>
+          <h2>Instant Multi-Language Playground</h2>
+        </div>
+        <div class="pg-controls">
+          <select id="pgLangSelect" aria-label="Playground Language"></select>
+          <button id="pgLoadStarterBtn" class="btn-ghost btn-sm">Load Template</button>
+          <button id="pgRunBtn" class="btn-primary btn-sm">▶ Run Sandbox</button>
+        </div>
+      </div>
+
+      <div class="pg-grid">
+        <div class="pg-editor-wrap">
+          <textarea id="pgEditor" class="pg-textarea" spellcheck="false"></textarea>
+        </div>
+        <div class="pg-output-wrap">
+          <div class="pg-out-head">
+            <span>Output &amp; Bilingual Error Diagnostics</span>
+            <span id="pgTimeLabel" class="exec-time"></span>
+          </div>
+          <div id="pgOutput" class="pg-output-body">
+            <div class="console-placeholder">Select any language and click <strong>Run Sandbox</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Monaco Editor Loader (CDN with seamless offline fallback) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js" defer></script>
+
+  <!-- Core Platform Modules -->
+  <script src="js/core.js"></script>
+
+  <!-- Modular Language Curriculum Packs (Add any new language by dropping a file here!) -->
+  <script src="languages/python.js"></script>
+  <script src="languages/javascript.js"></script>
+  <script src="languages/cpp.js"></script>
+  <script src="languages/c.js"></script>
+  <script src="languages/java.js"></script>
+  <script src="languages/dart.js"></script>
+
+  <!-- Execution, Bilingual Error Engine & Main UI Controller -->
+  <script src="js/error-engine.js"></script>
+  <script src="js/compiler.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
